@@ -280,6 +280,26 @@ func (sx *SX1276) rx() (pkt []byte, err error) {
 	return payload, nil
 }
 
+func (sx *SX1276) StartTx(pkts []byte) {
+	// set the IRQ mapping DIO0=TxDone DIO1=NOP DIO2=NOP
+	sx.WriteReg(RegLoRaDIOMAPPING1, LORA_DIO0_TXDONE|LORA_DIO1_LORA_NOP|LORA_DIO2_LORA_NOP)
+
+	// clear all radio IRQ flags 
+	sx.WriteReg(RegLoRaIRQFLAGS, 0xFF)
+
+	// mask all IRQs but TxDone 
+	sx.WriteReg(RegLoRaIRQFLAGSMASK, ^LORA_IRQFLAGS_TXDONE_MASK)
+
+	// initialize payload size and address pointers
+	sx.WriteReg(RegLoRaFIFOTXBASEADDR, 0x00)
+	sx.WriteReg(RegLoRaFIFOADDRPTR, 0x00)
+	sx.WriteReg(RegLoRaPAYLOADLENGTH, byte(len(pkts)))
+
+	// download buffer to the radio FIFO
+	sx.WriteReg(RegLoRaFIFO, pkts...)
+	sx.SetMode(LORA_OPMODE_TRANSMITTER)
+}
+
 func init() {
 	log.SetFlags(log.Lshortfile | log.Lmicroseconds)
 }

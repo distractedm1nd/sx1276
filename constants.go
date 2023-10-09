@@ -330,13 +330,21 @@ const (
 	LORA_DIOMAPPING1_DIO2_00   byte = 0x00 // Default
 	LORA_DIOMAPPING1_DIO2_01   byte = 0x04
 	LORA_DIOMAPPING1_DIO2_10   byte = 0x08
-	LORA_DIOMAPPING1_DIO2_11   byte = 0x0C
+	LORA_DIOMAPPING1_DIO2_11   byte = 0x0C // TODO: I think this is incorrect, it should be 0xC0
 
 	LORA_DIOMAPPING1_DIO3_MASK byte = 0xFC
 	LORA_DIOMAPPING1_DIO3_00   byte = 0x00 // Default
 	LORA_DIOMAPPING1_DIO3_01   byte = 0x01
 	LORA_DIOMAPPING1_DIO3_10   byte = 0x02
 	LORA_DIOMAPPING1_DIO3_11   byte = 0x03
+)
+
+const (
+	LORA_DIO0_RXDONE   byte = 0x00
+	LORA_DIO0_TXDONE   byte = 0x01
+	LORA_DIO1_RXTOUT   byte = 0x00
+	LORA_DIO1_LORA_NOP byte = 0x30
+	LORA_DIO2_LORA_NOP byte = 0x30
 )
 
 const (
